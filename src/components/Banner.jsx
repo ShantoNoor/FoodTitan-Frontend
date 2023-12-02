@@ -23,19 +23,27 @@ const Banner = () => {
         }}
       >
         <Typography
-          variant="h2"
+          variant="h3"
           component="h1"
           color="white"
           sx={{ textShadow: "2px 2px 4px rgba(0, 0, 0, .75)" }}
         >
           Order Food Now!
         </Typography>
+        <Typography
+          variant="h5"
+          component="h2"
+          color="white"
+          sx={{ textShadow: "2px 2px 4px rgba(0, 0, 0, .75)" }}
+          mb={3}
+        >
+          Discover local favorites, place orders effortlessly, and indulge in a
+          <br />
+          hassle-free dining experience with Food Titan.
+        </Typography>
         <Divider color="white" />
         <Box align="left" mt={2}>
-          <Button
-            size="large"
-            variant="contained"
-          >
+          <Button size="large" variant="contained">
             View All Food Items
           </Button>
         </Box>
