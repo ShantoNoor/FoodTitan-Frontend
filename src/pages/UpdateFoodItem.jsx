@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Box, Button, Container, Stack, TextField, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 
-const AddFoodItem = () => {
+const UpdateFoodItem = () => {
   useTitle("Book Parcel");
   const { user } = useAuth();
 
@@ -258,4 +258,4 @@ const AddFoodItem = () => {
   );
 };
 
-export default AddFoodItem;
+export default UpdateFoodItem;
