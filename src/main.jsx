@@ -14,6 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Spinner from "./components/Spinner.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 
 const AuthProvider = lazy(() => import("./components/AuthProvider.jsx"));
 const CssBaseline = lazy(() => import("@mui/material/CssBaseline"));
@@ -21,6 +22,11 @@ const CssBaseline = lazy(() => import("@mui/material/CssBaseline"));
 const MainLayout = lazy(() => import("./layouts/MainLayout.jsx"));
 
 const Home = lazy(() => import("./pages/Home.jsx"));
+const AllFoodItems = lazy(() => import("./pages/AllFoodItems.jsx"));
+const BlogPage = lazy(() => import("./pages/BlogPage.jsx"));
+const MyAddedFoodItems = lazy(() => import("./pages/MyAddedFoodItems.jsx"));
+const MyOrderedFoodItems = lazy(() => import("./pages/MyOrderedFoodItems.jsx"));
+const AddFoodItem = lazy(() => import("./pages/AddFoodItem.jsx"));
 const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const SignUp = lazy(() => import("./pages/SignUp.jsx"));
 const SignOut = lazy(() => import("./pages/SignOut.jsx"));
@@ -45,7 +51,39 @@ const router = createBrowserRouter([
       {
         path: "/sign-out",
         element: <SignOut />,
-      }
+      },
+      {
+        path: "/all-food-items",
+        element: <AllFoodItems />,
+      },
+      {
+        path: "/blog-page",
+        element: <BlogPage />,
+      },
+      {
+        path: "/my-added-food-items",
+        element: (
+          <PrivateRoute>
+            <MyAddedFoodItems />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/add-food-item",
+        element: (
+          <PrivateRoute>
+            <AddFoodItem />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-ordered-food-items",
+        element: (
+          <PrivateRoute>
+            <MyOrderedFoodItems />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

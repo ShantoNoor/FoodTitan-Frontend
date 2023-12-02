@@ -15,14 +15,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import useAuth from "../hooks/useAuth";
 import UserAvater from "./UserAvater";
-import FastfoodIcon from '@mui/icons-material/Fastfood';
+import FastfoodIcon from "@mui/icons-material/Fastfood";
 
 const LogoIcon = styled(FastfoodIcon)();
 const logoText = "FoodTitan";
 
 const pages = [
   ["Home", "/"],
-  // ["All Food", '/']
+  ["All Food Items", "/all-food-items"],
+  ["Blog Page", "/blog-page"],
 ];
 
 const authPages = [
@@ -31,6 +32,9 @@ const authPages = [
 ];
 
 const settings = [
+  ["My Added Food Items", "/my-added-food-items"],
+  ["Add Food Item", "/add-food-item"],
+  ["My Ordered Food Items", "/my-ordered-food-items"],
   ["Sign Out", "/sign-out"],
 ];
 
