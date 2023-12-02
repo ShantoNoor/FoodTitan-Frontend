@@ -6,8 +6,10 @@ import Typography from "@mui/material/Typography";
 import { Button, CardHeader, Divider, Stack } from "@mui/material";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { useNavigate } from "react-router-dom";
 
 export default function RecipeReviewCard({ food }) {
+  const navigate = useNavigate();
   return (
     <Card>
       <CardHeader subheader={food.category} />
@@ -47,7 +49,12 @@ export default function RecipeReviewCard({ food }) {
       <Divider variant="middle" />
       <CardActions>
         <Button size="large">Details</Button>
-        <Button size="large">Update</Button>
+        <Button
+          size="large"
+          onClick={() => navigate(`/update-food-item/${food._id}`)}
+        >
+          Update
+        </Button>
       </CardActions>
     </Card>
   );

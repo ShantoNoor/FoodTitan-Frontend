@@ -27,6 +27,7 @@ const BlogPage = lazy(() => import("./pages/BlogPage.jsx"));
 const MyAddedFoodItems = lazy(() => import("./pages/MyAddedFoodItems.jsx"));
 const MyOrderedFoodItems = lazy(() => import("./pages/MyOrderedFoodItems.jsx"));
 const AddFoodItem = lazy(() => import("./pages/AddFoodItem.jsx"));
+const UpdateFoodItem = lazy(() => import("./pages/UpdateFoodItem.jsx"));
 const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const SignUp = lazy(() => import("./pages/SignUp.jsx"));
 const SignOut = lazy(() => import("./pages/SignOut.jsx"));
@@ -73,6 +74,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddFoodItem />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update-food-item/:_id",
+        element: (
+          <PrivateRoute>
+            <UpdateFoodItem />
           </PrivateRoute>
         ),
       },
