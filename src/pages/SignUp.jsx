@@ -25,8 +25,6 @@ import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { axiosn } from "../hooks/useAxios";
 import toast from "react-hot-toast";
-import SelectFormField from "../components/SelectFormField";
-import styled from "@emotion/styled";
 
 const Player = React.lazy(() =>
   import("@lottiefiles/react-lottie-player").then((module) => {
@@ -34,21 +32,7 @@ const Player = React.lazy(() =>
   })
 );
 
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import axios from "axios";
 import useTitle from "../hooks/useTitle";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
 
 export default function SignUp() {
   useTitle("SignUp");
@@ -61,7 +45,6 @@ export default function SignUp() {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm({});
 
@@ -72,47 +55,10 @@ export default function SignUp() {
     event.preventDefault();
   };
 
-  const uploadPhoto = (photo) => {
-    return new Promise((resolve, reject) => {
-      const formData = new FormData();
-      formData.append("image", photo);
-      axios
-        .post(
-          `https://api.imgbb.com/1/upload?key=${
-            import.meta.env.VITE_apiKey_imagebb
-          }`,
-          formData,
-          {
-            headers: {
-              "content-type": "multipart/form-data",
-            },
-          }
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            const photoUrl = response.data.data.url;
-            return resolve(photoUrl);
-          }
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-          return reject(error);
-        });
-    });
-  };
-
-  const formSubmit = async (all_data) => {
+  const formSubmit = async (data) => {
     const id = toast.loading("Please, wait ....");
     try {
-      const { photo, ...data } = all_data;
-      let photoUrl = "";
-      if (photo.length) {
-        photoUrl = await uploadPhoto(photo[0]);
-      }
-      data.photo = photoUrl;
-
       const res = await signUp(data.name, data.email, data.password);
-
       if (res?.email) {
         const result = await Promise.all([
           axiosn.post("/users", data),
@@ -121,15 +67,13 @@ export default function SignUp() {
 
         data._id = result[0].data._id;
         setUser(data);
-
-        toast.dismiss(id);
-
-        navigate("/");
       }
     } catch (err) {
       console.error(err);
-      toast.dismiss(id);
       toast.error(err?.response?.data);
+    } finally {
+      toast.dismiss(id);
+      navigate("/");
     }
   };
 
@@ -285,6 +229,14 @@ export default function SignUp() {
                 >
                   {errors?.password?.message}
                 </Typography>
+              </Box>
+              <Box flex={1}>
+                <TextField
+                  fullWidth
+                  label="Photo URL"
+                  autoFocus
+                  {...register("photo")}
+                />
               </Box>
             </Stack>
 

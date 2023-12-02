@@ -10,15 +10,15 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import styled from "@emotion/styled";
 import { useLocation, useNavigate } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import useAuth from "../hooks/useAuth";
 import UserAvater from "./UserAvater";
+import FastfoodIcon from '@mui/icons-material/Fastfood';
 
-const LogoIcon = styled(ShoppingBagIcon)();
-const logoText = "ParcelBee";
+const LogoIcon = styled(FastfoodIcon)();
+const logoText = "FoodTitan";
 
 const pages = [
   ["Home", "/"],
@@ -31,7 +31,6 @@ const authPages = [
 ];
 
 const settings = [
-  ["Profile", "/dashboard/my-profile"],
   ["Sign Out", "/sign-out"],
 ];
 

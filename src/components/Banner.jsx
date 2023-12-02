@@ -1,12 +1,9 @@
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Container } from "@mui/system";
-import { Button, Divider, TextField } from "@mui/material";
-import { useState } from "react";
+import { Button, Divider } from "@mui/material";
 
 const Banner = () => {
-  const [st, sst] = useState("");
-
   return (
     <Box
       sx={{
@@ -26,21 +23,18 @@ const Banner = () => {
         }}
       >
         <Typography
-          variant="h1"
+          variant="h2"
           component="h1"
           color="white"
           sx={{ textShadow: "2px 2px 4px rgba(0, 0, 0, .75)" }}
         >
-          Order Your Food Now!
+          Order Food Now!
         </Typography>
         <Divider color="white" />
         <Box align="left" mt={2}>
           <Button
             size="large"
             variant="contained"
-            onClick={() => {
-              console.log(st);
-            }}
           >
             View All Food Items
           </Button>

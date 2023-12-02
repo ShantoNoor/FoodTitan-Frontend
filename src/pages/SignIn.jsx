@@ -73,8 +73,6 @@ export default function SignIn() {
         sm={false}
         md={7}
         sx={{
-          // backgroundImage: "url(https://www.minopcloud.com/app_assets/images/signin.png)",
-          // backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"

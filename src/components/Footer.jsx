@@ -10,7 +10,7 @@ import {
 import Link from "./Link";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import FastfoodIcon from '@mui/icons-material/Fastfood';
 
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -18,7 +18,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import Copyright from "./Copyright";
 
-const LogoIcon = styled(ShoppingBagIcon)();
+const LogoIcon = styled(FastfoodIcon)();
 const logoText = "FoodTitan";
 
 const Footer = () => {

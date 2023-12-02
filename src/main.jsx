@@ -45,7 +45,7 @@ const router = createBrowserRouter([
       {
         path: "/sign-out",
         element: <SignOut />,
-      },
+      }
     ],
   },
 ]);
