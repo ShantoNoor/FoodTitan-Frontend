@@ -33,7 +33,7 @@ const Footer = () => {
       sx={{
         background:
           pathname === "/"
-            ? "linear-gradient(rgba(1, 1, 1, 0.5), rgba(1, 1, 1, 0.7)), url(https://m.media-amazon.com/images/S/pv-target-images/19c674f4de2c2394472bffcb167afecd2f13beb8749beaf541c3895a99cd43f5.jpg)"
+            ? "linear-gradient(rgba(1, 1, 1, 0.4), rgba(5, 5, 5, 0.7)), url(https://m.media-amazon.com/images/S/pv-target-images/19c674f4de2c2394472bffcb167afecd2f13beb8749beaf541c3895a99cd43f5.jpg)"
             : "",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
