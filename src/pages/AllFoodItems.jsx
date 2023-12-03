@@ -1,7 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosn } from "../hooks/useAxios";
 import Spinner from "../components/Spinner";
-import { Container, Grid, IconButton, InputBase, Paper } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  IconButton,
+  InputBase,
+  Pagination,
+  Paper,
+  Stack,
+} from "@mui/material";
 import RecipeReviewCard from "../components/RecipeReviewCard";
 import { useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
@@ -9,12 +18,17 @@ import SearchIcon from "@mui/icons-material/Search";
 const AllFoodItems = () => {
   const [search, setSearch] = useState("");
   const serachRef = useRef(null);
+  const [page, setPage] = useState(1);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
   const { data, isPending, error } = useQuery({
-    queryKey: ["/foods", `search=${search}`],
+    queryKey: ["/foods", `search=${search}`, `page=${page}`],
     queryFn: async () => {
       try {
-        const res = await axiosn.get(`/foods?search=${search}`);
+        const res = await axiosn.get(`/foods?search=${search}&page=${page}`);
         return res.data;
       } catch (err) {
         console.error(err);
@@ -56,7 +70,7 @@ const AllFoodItems = () => {
       </Paper>
 
       <Grid container gap={5} alignItems="stretch" justifyContent="center">
-        {data.map((food) => {
+        {data[0].map((food) => {
           return (
             <Grid item key={food._id} xs={12} md={4} lg={3}>
               <RecipeReviewCard food={food} />
@@ -64,6 +78,14 @@ const AllFoodItems = () => {
           );
         })}
       </Grid>
+      <Stack justifyContent="center" alignItems="center" mt={5}>
+        <Pagination
+          count={Math.ceil(data[1]/9)}
+          color="primary"
+          page={page}
+          onChange={handleChangePage}
+        />
+      </Stack>
     </Container>
   );
 };
