@@ -23,8 +23,8 @@ export default function RecipeReviewCard({ food }) {
         <Typography gutterBottom variant="h5" component="div">
           {food.name}
         </Typography>
-        <Typography variant="body" color="text.secondary">
-          {food.description.slice(0, 200)}
+        <Typography variant="body2" color="text.secondary" sx={{textAlign: 'justify'}}>
+          {food.description.slice(0, 200) + '....'}
         </Typography>
       </CardContent>
       <Divider variant="middle" />
