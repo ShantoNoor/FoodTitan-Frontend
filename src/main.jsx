@@ -15,6 +15,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Spinner from "./components/Spinner.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
+import FoodPurchasePage from "./pages/FoodPurchasePage.jsx";
 
 const AuthProvider = lazy(() => import("./components/AuthProvider.jsx"));
 const CssBaseline = lazy(() => import("@mui/material/CssBaseline"));
@@ -28,6 +29,7 @@ const MyAddedFoodItems = lazy(() => import("./pages/MyAddedFoodItems.jsx"));
 const MyOrderedFoodItems = lazy(() => import("./pages/MyOrderedFoodItems.jsx"));
 const AddFoodItem = lazy(() => import("./pages/AddFoodItem.jsx"));
 const UpdateFoodItem = lazy(() => import("./pages/UpdateFoodItem.jsx"));
+const SingleFoodItem = lazy(() => import("./pages/SingleFoodItem.jsx"));
 const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const SignUp = lazy(() => import("./pages/SignUp.jsx"));
 const SignOut = lazy(() => import("./pages/SignOut.jsx"));
@@ -82,6 +84,18 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <UpdateFoodItem />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/single-food-item/:_id",
+        element: <SingleFoodItem />,
+      },
+      {
+        path: "/food-purchase-page/:_id",
+        element: (
+          <PrivateRoute>
+            <FoodPurchasePage />
           </PrivateRoute>
         ),
       },

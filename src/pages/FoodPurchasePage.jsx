@@ -1,28 +1,28 @@
-import useTitle from "../hooks/useTitle";
-import toast from "react-hot-toast";
-import { axiosn } from "../hooks/useAxios";
-import { useForm } from "react-hook-form";
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { axiosn } from "../hooks/useAxios";
 import { useParams } from "react-router-dom";
+import { Box, Container, Stack, TextField, Typography } from "@mui/material";
 import Spinner from "../components/Spinner";
+import { Button } from "@mui/material";
+import toast from "react-hot-toast";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import useAuth from "../hooks/useAuth";
+import { DateField } from "@mui/x-date-pickers";
+import moment from "moment";
 
-const UpdateFoodItem = () => {
-  useTitle("Update Food");
+const FoodPurchasePage = () => {
   const { _id } = useParams();
-
-  const { data, isPending, error } = useQuery({
+  const { user } = useAuth();
+  const { data, isPending, error, refetch } = useQuery({
     queryKey: [`/foods`, `_id=${_id}`],
     queryFn: async () => {
-      return (await axiosn.get(`/foods?_id=${_id}`)).data[0][0];
+      try {
+        const res = await axiosn.get(`/foods?_id=${_id}`);
+        return res.data[0][0];
+      } catch (err) {
+        console.error(err);
+      }
     },
   });
 
@@ -31,6 +31,8 @@ const UpdateFoodItem = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
+    setValue,
   } = useForm({});
 
   useEffect(() => {
@@ -39,40 +41,72 @@ const UpdateFoodItem = () => {
         name: data.name || "",
         image: data.image || "",
         category: data.category || "",
-        price: data.price || "",
-        quantity: data.quantity || "",
+        price: data.price || 0,
+        quantity: data.quantity || 0,
+        buying_quantity: 1,
         origin: data.origin || "",
-        description: data.description || "",
-        user_email: data.created_by.email || "",
-        user_name: data.created_by.name || "",
+        user_email: user.email || "",
+        user_name: user.name || "",
       });
     }
-  }, [data, reset]);
+  }, [data, reset, user]);
 
   const mutation = useMutation({
-    mutationKey: ["/foods", `_id=${_id}`],
+    mutationKey: ["/orders"],
     mutationFn: async (data) => {
       try {
-        const res = await axiosn.put(`/foods/${_id}`, data);
-        if (res.status === 200) {
-          toast.success("Food Updated Successfully");
+        const res = await axiosn.post(`/orders`, data);
+        if (res.status === 201) {
+          toast.success("Food Order Successful");
         }
       } catch (err) {
-        toast.error("Unable to Update Food");
+        toast.error("Unable to Order Food");
         console.error(err);
       }
     },
   });
 
-  const formSubmit = async (data) => {
-    mutation.mutate(data);
+  const formSubmit = async (fromData) => {
+    if (fromData.quantity === 0) {
+      toast.error("There is no food in stock at this moment");
+      return;
+    }
+    if (fromData.quantity < fromData.buying_quantity) {
+      toast.error("Don't have enough food in stock at this moment");
+      return;
+    }
+
+    fromData.created_by = data.created_by._id;
+    fromData.ordered_by = user._id;
+    fromData.food_id = _id;
+
+    mutation.mutate(fromData);
+    reset();
+    refetch();
+    setValue("quantity", data.quantity - fromData.buying_quantity);
   };
+
+  const watch_price = watch("price");
+  const watch_quantity = watch("buying_quantity");
+
+  useEffect(() => {
+    if (watch_price && watch_quantity)
+      setValue("total_price", watch_price * parseInt(watch_quantity));
+  }, [watch_price, watch_quantity, setValue]);
 
   if (isPending) return <Spinner />;
   if (error) return "An error has occurred: " + error.message;
 
   return (
     <Container>
+      <Box align="center">
+        <img
+          style={{ objectFit: "cover" }}
+          width={"100%"}
+          height={300}
+          src={data.image}
+        />
+      </Box>
       <Box
         component="form"
         onSubmit={handleSubmit(formSubmit)}
@@ -86,6 +120,9 @@ const UpdateFoodItem = () => {
                 fullWidth
                 label="Food Name"
                 autoFocus
+                InputProps={{
+                  readOnly: true,
+                }}
                 type="text"
                 {...register("name", {
                   required: "Food Name is required",
@@ -100,26 +137,6 @@ const UpdateFoodItem = () => {
                 {errors?.name?.message}
               </Typography>
             </Box>
-
-            <Box flex={1}>
-              <TextField
-                variant="outlined"
-                fullWidth
-                label="Food Image"
-                type="text"
-                {...register("image", {
-                  required: "Food Image is required",
-                })}
-              />
-              <Typography
-                component={"p"}
-                color={"error"}
-                role="alert"
-                fontSize={"14px"}
-              >
-                {errors?.image?.message}
-              </Typography>
-            </Box>
           </Stack>
 
           <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
@@ -128,6 +145,9 @@ const UpdateFoodItem = () => {
                 variant="outlined"
                 fullWidth
                 label="Food Category"
+                InputProps={{
+                  readOnly: true,
+                }}
                 type="text"
                 {...register("category", {
                   required: "Food Category is required",
@@ -147,7 +167,10 @@ const UpdateFoodItem = () => {
               <TextField
                 variant="outlined"
                 fullWidth
-                label="Food Quantity"
+                label="Food Quantity Available in Stock"
+                InputProps={{
+                  readOnly: true,
+                }}
                 type="number"
                 {...register("quantity", {
                   required: "Food Quantity is required",
@@ -172,6 +195,9 @@ const UpdateFoodItem = () => {
                 variant="outlined"
                 fullWidth
                 label="Food Price"
+                InputProps={{
+                  readOnly: true,
+                }}
                 type="number"
                 {...register("price", {
                   required: "Food Price is required",
@@ -196,6 +222,9 @@ const UpdateFoodItem = () => {
                 variant="outlined"
                 fullWidth
                 label="Food Origin"
+                InputProps={{
+                  readOnly: true,
+                }}
                 type="text"
                 {...register("origin", {
                   required: "Food Origin is required",
@@ -217,7 +246,7 @@ const UpdateFoodItem = () => {
               <TextField
                 variant="outlined"
                 fullWidth
-                label="Your Name"
+                label="Buyer Name"
                 InputProps={{
                   readOnly: true,
                 }}
@@ -236,7 +265,7 @@ const UpdateFoodItem = () => {
               <TextField
                 variant="outlined"
                 fullWidth
-                label="Your Email Address"
+                label="Buyer Email Address"
                 autoComplete="email"
                 InputProps={{
                   readOnly: true,
@@ -253,18 +282,19 @@ const UpdateFoodItem = () => {
               </Typography>
             </Box>
           </Stack>
-
           <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
             <Box flex={1}>
               <TextField
                 variant="outlined"
                 fullWidth
-                label="Food Short Description"
-                multiline
-                rows={4}
-                type="text"
-                {...register("description", {
-                  required: "Food Short Description is required",
+                label="Buying Food Quantity"
+                type="number"
+                {...register("buying_quantity", {
+                  required: "Buying Food Quantity is required",
+                  min: {
+                    value: 0,
+                    message: "Buying Food Quantity must be greater than 0",
+                  },
                 })}
               />
               <Typography
@@ -273,9 +303,24 @@ const UpdateFoodItem = () => {
                 role="alert"
                 fontSize={"14px"}
               >
-                {errors?.description?.message}
+                {errors?.buying_quantity?.message}
               </Typography>
             </Box>
+            <Box flex={1}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                label="Total Price"
+                type="number"
+                InputProps={{ readOnly: true }}
+                {...register("total_price")}
+              />
+            </Box>
+            <DateField
+              label="Order Date"
+              readOnly={true}
+              defaultValue={moment(Date.now())}
+            />
           </Stack>
         </Stack>
         <Button
@@ -284,11 +329,11 @@ const UpdateFoodItem = () => {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Update
+          Purchase
         </Button>
       </Box>
     </Container>
   );
 };
 
-export default UpdateFoodItem;
+export default FoodPurchasePage;

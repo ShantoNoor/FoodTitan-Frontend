@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { axiosn } from "../hooks/useAxios";
 import Spinner from "../components/Spinner";
 import {
-  Box,
+  Button,
   Container,
   Grid,
   IconButton,
@@ -14,8 +14,12 @@ import {
 import RecipeReviewCard from "../components/RecipeReviewCard";
 import { useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
+
 
 const AllFoodItems = () => {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const serachRef = useRef(null);
   const [page, setPage] = useState(1);
@@ -73,14 +77,24 @@ const AllFoodItems = () => {
         {data[0].map((food) => {
           return (
             <Grid item key={food._id} xs={12} md={4} lg={3}>
-              <RecipeReviewCard food={food} />
+              <RecipeReviewCard food={food}>
+                <Button 
+                onClick={() => navigate(`/single-food-item/${food._id}`)}
+                size="large">Details</Button>
+                <Button
+                  size="large"
+                  onClick={() => navigate(`/update-food-item/${food._id}`)}
+                >
+                  Update
+                </Button>
+              </RecipeReviewCard>
             </Grid>
           );
         })}
       </Grid>
       <Stack justifyContent="center" alignItems="center" mt={5}>
         <Pagination
-          count={Math.ceil(data[1]/9)}
+          count={Math.ceil(data[1] / 9)}
           color="primary"
           page={page}
           onChange={handleChangePage}

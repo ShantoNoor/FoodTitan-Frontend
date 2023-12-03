@@ -3,13 +3,11 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Typography from "@mui/material/Typography";
-import { Button, CardHeader, Divider, Stack } from "@mui/material";
+import { CardHeader, Divider, Stack } from "@mui/material";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { useNavigate } from "react-router-dom";
 
-export default function RecipeReviewCard({ food }) {
-  const navigate = useNavigate();
+export default function RecipeReviewCard({ children, food }) {
   return (
     <Card>
       <CardHeader subheader={food.category} />
@@ -23,8 +21,12 @@ export default function RecipeReviewCard({ food }) {
         <Typography gutterBottom variant="h5" component="div">
           {food.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{textAlign: 'justify'}}>
-          {food.description.slice(0, 200) + '....'}
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ textAlign: "justify" }}
+        >
+          {food.description.slice(0, 200) + "...."}
         </Typography>
       </CardContent>
       <Divider variant="middle" />
@@ -47,15 +49,7 @@ export default function RecipeReviewCard({ food }) {
         </Stack>
       </CardContent>
       <Divider variant="middle" />
-      <CardActions>
-        <Button size="large">Details</Button>
-        <Button
-          size="large"
-          onClick={() => navigate(`/update-food-item/${food._id}`)}
-        >
-          Update
-        </Button>
-      </CardActions>
+      <CardActions>{children}</CardActions>
     </Card>
   );
 }
