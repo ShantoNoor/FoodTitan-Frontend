@@ -18,7 +18,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Divider, Stack } from "@mui/material";
 import SocialLogin from "../components/SocialLogin";
 import PersonIcon from "@mui/icons-material/Person";
-import Animation from "../assets/animations/sign-up.json";
 
 import { useForm } from "react-hook-form";
 import useAuth from "../hooks/useAuth";
@@ -26,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { axiosn } from "../hooks/useAxios";
 import toast from "react-hot-toast";
 
+import Animation from "../assets/animations/sign-up.json";
 const Player = React.lazy(() =>
   import("@lottiefiles/react-lottie-player").then((module) => {
     return { default: module.Player };

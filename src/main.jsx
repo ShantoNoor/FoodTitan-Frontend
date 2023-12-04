@@ -33,6 +33,7 @@ const SingleFoodItem = lazy(() => import("./pages/SingleFoodItem.jsx"));
 const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const SignUp = lazy(() => import("./pages/SignUp.jsx"));
 const SignOut = lazy(() => import("./pages/SignOut.jsx"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage.jsx"));
 
 import { HelmetProvider } from "react-helmet-async";
 
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
