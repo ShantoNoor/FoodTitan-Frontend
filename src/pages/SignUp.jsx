@@ -32,10 +32,8 @@ const Player = React.lazy(() =>
   })
 );
 
-import useTitle from "../hooks/useTitle";
 
 export default function SignUp() {
-  useTitle("SignUp");
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

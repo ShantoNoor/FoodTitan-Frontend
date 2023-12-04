@@ -1,4 +1,3 @@
-import useTitle from "../hooks/useTitle";
 import toast from "react-hot-toast";
 import { axiosn } from "../hooks/useAxios";
 import { useForm } from "react-hook-form";
@@ -14,9 +13,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { useEffect } from "react";
+import Title from "../components/Title";
 
 const UpdateFoodItem = () => {
-  useTitle("Update Food");
+  <Title>Update Food Item</Title>;
   const { _id } = useParams();
 
   const { data, isPending, error } = useQuery({

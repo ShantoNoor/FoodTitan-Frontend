@@ -34,6 +34,8 @@ const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const SignUp = lazy(() => import("./pages/SignUp.jsx"));
 const SignOut = lazy(() => import("./pages/SignOut.jsx"));
 
+import { HelmetProvider } from "react-helmet-async";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -120,7 +122,9 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <LocalizationProvider dateAdapter={AdapterMoment}>
-            <RouterProvider router={router}></RouterProvider>
+            <HelmetProvider>
+              <RouterProvider router={router}></RouterProvider>
+            </HelmetProvider>
             <CssBaseline />
           </LocalizationProvider>
         </AuthProvider>

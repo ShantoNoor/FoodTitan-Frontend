@@ -2,8 +2,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Container } from "@mui/system";
 import { Button, Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Banner = () => {
+  const navigate = useNavigate();
+  
   return (
     <Box
       sx={{
@@ -43,7 +46,11 @@ const Banner = () => {
         </Typography>
         <Divider color="white" />
         <Box align="left" mt={2}>
-          <Button size="large" variant="contained">
+          <Button
+            size="large"
+            variant="contained"
+            onClick={() => navigate("/all-food-items")}
+          >
             View All Food Items
           </Button>
         </Box>

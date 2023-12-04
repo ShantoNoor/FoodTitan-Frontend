@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import Banner from "../components/Banner";
-import useTitle from "../hooks/useTitle";
+import Title from "../components/Title";
 
 const Home = () => {
-  useTitle("Home | FoodTitan");
   return (
     <>
+      <Title>Home</Title>
       <Banner />
       <Box my={8}></Box>
     </>

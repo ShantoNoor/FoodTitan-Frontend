@@ -5,31 +5,33 @@ import Spinner from "../components/Spinner";
 import {
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Grid,
-  IconButton,
-  InputBase,
-  Pagination,
-  Paper,
-  Stack,
+  Typography,
 } from "@mui/material";
 import RecipeReviewCard from "../components/RecipeReviewCard";
-import { useRef, useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import Title from "../components/Title";
+import { useState } from "react";
 
 const MyAddedFoodItems = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [search, setSearch] = useState("");
-  const serachRef = useRef(null);
-  const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [food_id, setFood_id] = useState('');
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const { data, isPending, error } = useQuery({
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const { data, isPending, error, refetch } = useQuery({
     queryKey: ["/foods", `created_by=${user._id}`],
     queryFn: async () => {
       try {
@@ -46,66 +48,65 @@ const MyAddedFoodItems = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <Container sx={{ mt: 5 }}>
-      <Paper
-        sx={{
-          p: "2px 4px",
-          display: "flex",
-          alignItems: "center",
-          width: 400,
-          mx: "auto",
-          mb: 5,
-        }}
-      >
-        <InputBase
-          sx={{ ml: 1, flex: 1 }}
-          placeholder="Search Food"
-          inputRef={serachRef}
-          defaultValue={search}
-        />
-        <IconButton
-          type="button"
-          sx={{ p: "10px" }}
-          aria-label="search"
-          onClick={() => {
-            setSearch(serachRef.current.value);
-          }}
-        >
-          <SearchIcon />
-        </IconButton>
-      </Paper>
+    <>
+      <Title>My Added Food Items</Title>
+      <Container sx={{ mt: 5 }}>
+        {data[0].length === 0 ?
+        <Typography variant="h1">You have not added any food item!</Typography> : <Grid container gap={5} alignItems="stretch" justifyContent="center">
+          {data[0].map((food) => {
+            return (
+              <Grid item key={food._id} xs={12} md={4} lg={3}>
+                <RecipeReviewCard food={food}>
+                  <Button
+                    size="large"
+                    onClick={() => navigate(`/update-food-item/${food._id}`)}
+                  >
+                    Update
+                  </Button>
 
-      <Grid container gap={5} alignItems="stretch" justifyContent="center">
-        {data[0].map((food) => {
-          return (
-            <Grid item key={food._id} xs={12} md={4} lg={3}>
-              <RecipeReviewCard food={food}>
-                <Button
-                  onClick={() => navigate(`/single-food-item/${food._id}`)}
-                  size="large"
-                >
-                  Details
-                </Button>
-                <Button
-                  size="large"
-                  onClick={() => navigate(`/update-food-item/${food._id}`)}
-                >
-                  Update
-                </Button>
-              </RecipeReviewCard>
-            </Grid>
-          );
-        })}
-      </Grid>
-      <Stack justifyContent="center" alignItems="center" mt={5}>
-        <Pagination
-          count={Math.ceil(data[1] / 9)}
-          color="primary"
-          page={page}
-          onChange={handleChangePage}
-        />
-      </Stack>
-    </Container>
+                  <Button
+                    onClick={() => {
+                      setFood_id(food._id);
+                      handleClickOpen();
+                    }}
+                    size="large"
+                  >
+                    Delete
+                  </Button>
+                </RecipeReviewCard>
+              </Grid>
+            );
+          })}
+        </Grid>}
+      </Container>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete ?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button
+            onClick={async () => {
+              try {
+                await axiosn.delete(`/foods/${food_id}`);
+                await refetch();
+                handleClose();
+              } catch (err) {
+                console.error(err);
+              }
+            }}
+            autoFocus
+          >
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 

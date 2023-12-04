@@ -136,7 +136,9 @@ function Navbar() {
                   key={page}
                   onClick={() => {
                     handleCloseNavMenu();
-                    navigate(page[1]);
+                    setTimeout(() => {
+                      navigate(page[1]);
+                    }, 500);
                   }}
                   selected={pathname === page[1]}
                 >
@@ -224,12 +226,7 @@ function Navbar() {
                 onClose={handleCloseUserMenu}
               >
                 <Box textAlign={"center"}>
-                  <Typography
-                    variant="h6"
-                    component="span"
-                    // color={deepOrange[500]}
-                    p={2}
-                  >
+                  <Typography variant="h6" component="span" p={2}>
                     {user.name}
                   </Typography>
                   <Divider variant="middle" />
@@ -240,7 +237,9 @@ function Navbar() {
                     key={setting}
                     onClick={() => {
                       handleCloseUserMenu();
-                      navigate(setting[1]);
+                      setTimeout(() => {
+                        navigate(setting[1]);
+                      }, 250);
                     }}
                     selected={pathname === setting[1]}
                   >
