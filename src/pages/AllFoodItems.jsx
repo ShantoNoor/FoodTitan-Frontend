@@ -46,7 +46,7 @@ const AllFoodItems = () => {
   return (
     <>
     <Title>All Food Items</Title>
-      <Container sx={{ mt: 5 }}>
+      <Container sx={{ mt: 2 }}>
         <Paper
           sx={{
             p: "2px 4px",

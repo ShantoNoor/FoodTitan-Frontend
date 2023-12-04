@@ -10,17 +10,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Title from "../components/Title";
+import { useNavigate } from "react-router-dom";
 
 const AddFoodItem = () => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
       user_name: user.name,
@@ -35,7 +37,6 @@ const AddFoodItem = () => {
         const res = await axiosn.post("/foods", data);
         if (res.status === 201) {
           toast.success("Food Added Successfully");
-          reset();
         }
       } catch (err) {
         toast.error("Unable to Add Food");
@@ -46,7 +47,9 @@ const AddFoodItem = () => {
 
   const formSubmit = async (data) => {
     data.created_by = user._id;
-    mutation.mutate(data);
+    await mutation.mutate(data);
+    await queryClient.invalidateQueries(["/foods", `created_by=${user._id}`]);
+    navigate("/my-added-food-items");
   };
 
   return (

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Box, Container, Divider, Stack, Typography } from "@mui/material";
 import Spinner from "../components/Spinner";
 import { Button } from "@mui/material";
+import Title from "../components/Title";
 
 const SingleFoodItem = () => {
   const navigate = useNavigate();
@@ -24,55 +25,58 @@ const SingleFoodItem = () => {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <Container>
-      <Box align="center">
-        <img
-          style={{ objectFit: "cover" }}
-          width={"100%"}
-          height={300}
-          src={data.image}
-        />
-      </Box>
-      <Box>
-        <Typography variant="h3" component="h1">
-          {data.name}
-        </Typography>
-      </Box>
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        divider={<Divider color="black" orientation="vertical" flexItem />}
-        spacing={1}
-        my={2}
-      >
-        <Typography variant="h6" component="p">
-          Category: {data.category}
-        </Typography>
-        <Typography variant="h6" component="p">
-          Price: ${data.price}
-        </Typography>
-        <Typography variant="h6" component="p">
-          Made By: {data.created_by.name}
-        </Typography>
-        <Typography variant="h6" component="p">
-          Origin: {data.origin}
-        </Typography>
-        <Box>
-          <Button
-            variant="outlined"
-            onClick={() => navigate(`/food-purchase-page/${data._id}`)}
-          >
-            Order Now
-          </Button>
+    <>
+      <Title>Single Food Item</Title>
+      <Container sx={{ mt: 2 }}>
+        <Box align="center">
+          <img
+            style={{ objectFit: "cover" }}
+            width={"100%"}
+            height={300}
+            src={data.image}
+          />
         </Box>
-      </Stack>
-      <Box mb={3}>
-        <Typography variant="h6" component="p">
-          Description
-        </Typography>
-        <Divider />
-        <Typography variant="body1">{data.description}</Typography>
-      </Box>
-    </Container>
+        <Box>
+          <Typography variant="h3" component="h1">
+            {data.name}
+          </Typography>
+        </Box>
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          divider={<Divider color="black" orientation="vertical" flexItem />}
+          spacing={1}
+          my={2}
+        >
+          <Typography variant="h6" component="p">
+            Category: {data.category}
+          </Typography>
+          <Typography variant="h6" component="p">
+            Price: ${data.price}
+          </Typography>
+          <Typography variant="h6" component="p">
+            Made By: {data.created_by.name}
+          </Typography>
+          <Typography variant="h6" component="p">
+            Origin: {data.origin}
+          </Typography>
+          <Box>
+            <Button
+              variant="outlined"
+              onClick={() => navigate(`/food-purchase-page/${data._id}`)}
+            >
+              Order Now
+            </Button>
+          </Box>
+        </Stack>
+        <Box mb={3}>
+          <Typography variant="h6" component="p">
+            Description
+          </Typography>
+          <Divider />
+          <Typography variant="body1">{data.description}</Typography>
+        </Box>
+      </Container>
+    </>
   );
 };
 

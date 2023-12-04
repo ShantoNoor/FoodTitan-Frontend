@@ -50,9 +50,9 @@ const MyAddedFoodItems = () => {
   return (
     <>
       <Title>My Added Food Items</Title>
-      <Container sx={{ mt: 5 }}>
+      <Container sx={{ mt: 2 }}>
         {data[0].length === 0 ?
-        <Typography variant="h1">You have not added any food item!</Typography> : <Grid container gap={5} alignItems="stretch" justifyContent="center">
+        <Typography variant="h1">You do not have any added any food item!</Typography> : <Grid container gap={5} alignItems="stretch" justifyContent="center">
           {data[0].map((food) => {
             return (
               <Grid item key={food._id} xs={12} md={4} lg={3}>
