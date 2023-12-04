@@ -21,7 +21,7 @@ const MyAddedFoodItems = () => {
   const { user } = useAuth();
 
   const [open, setOpen] = useState(false);
-  const [food_id, setFood_id] = useState('');
+  const [food_id, setFood_id] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,7 +36,7 @@ const MyAddedFoodItems = () => {
     queryFn: async () => {
       try {
         const res = await axiosn.get(`/foods?created_by=${user._id}`);
-        return res.data;
+        return res.data[0];
       } catch (err) {
         console.error(err);
       }
@@ -51,33 +51,38 @@ const MyAddedFoodItems = () => {
     <>
       <Title>My Added Food Items</Title>
       <Container sx={{ mt: 2 }}>
-        {data[0].length === 0 ?
-        <Typography variant="h1">You do not have any added any food item!</Typography> : <Grid container gap={5} alignItems="stretch" justifyContent="center">
-          {data[0].map((food) => {
-            return (
-              <Grid item key={food._id} xs={12} md={4} lg={3}>
-                <RecipeReviewCard food={food}>
-                  <Button
-                    size="large"
-                    onClick={() => navigate(`/update-food-item/${food._id}`)}
-                  >
-                    Update
-                  </Button>
+        {data.length === 0 ? (
+          <Typography variant="h1">
+            You do not have any added any food item!
+          </Typography>
+        ) : (
+          <Grid container gap={5} alignItems="stretch" justifyContent="center">
+            {data.map((food) => {
+              return (
+                <Grid item key={food._id} xs={12} md={4} lg={3}>
+                  <RecipeReviewCard food={food}>
+                    <Button
+                      size="large"
+                      onClick={() => navigate(`/update-food-item/${food._id}`)}
+                    >
+                      Update
+                    </Button>
 
-                  <Button
-                    onClick={() => {
-                      setFood_id(food._id);
-                      handleClickOpen();
-                    }}
-                    size="large"
-                  >
-                    Delete
-                  </Button>
-                </RecipeReviewCard>
-              </Grid>
-            );
-          })}
-        </Grid>}
+                    <Button
+                      onClick={() => {
+                        setFood_id(food._id);
+                        handleClickOpen();
+                      }}
+                      size="large"
+                    >
+                      Delete
+                    </Button>
+                  </RecipeReviewCard>
+                </Grid>
+              );
+            })}
+          </Grid>
+        )}
       </Container>
       <Dialog
         open={open}

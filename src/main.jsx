@@ -15,11 +15,10 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Spinner from "./components/Spinner.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
-import FoodPurchasePage from "./pages/FoodPurchasePage.jsx";
+import { HelmetProvider } from "react-helmet-async";
+import AuthProvider from "./components/AuthProvider.jsx";
 
-const AuthProvider = lazy(() => import("./components/AuthProvider.jsx"));
 const CssBaseline = lazy(() => import("@mui/material/CssBaseline"));
-
 const MainLayout = lazy(() => import("./layouts/MainLayout.jsx"));
 
 const Home = lazy(() => import("./pages/Home.jsx"));
@@ -34,8 +33,7 @@ const SignIn = lazy(() => import("./pages/SignIn.jsx"));
 const SignUp = lazy(() => import("./pages/SignUp.jsx"));
 const SignOut = lazy(() => import("./pages/SignOut.jsx"));
 const ErrorPage = lazy(() => import("./pages/ErrorPage.jsx"));
-
-import { HelmetProvider } from "react-helmet-async";
+const FoodPurchasePage = lazy(() => import("./pages/FoodPurchasePage.jsx"));
 
 const router = createBrowserRouter([
   {
